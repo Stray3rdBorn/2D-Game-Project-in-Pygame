@@ -10,6 +10,7 @@ venv/
 
 # Game save data 
 highscore.json
+servercmd.txt
 
 # Editors and OS
 .vscode/
