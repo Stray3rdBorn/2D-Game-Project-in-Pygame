@@ -2,6 +2,7 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.shortcuts import redirect, render
+from django.db.models import Max
 
 from .models import ApiKey, Score
 
@@ -27,5 +28,5 @@ def profile(request):
 
 
 def leaderboard(request):
-    scores = Score.objects.all()[:10]
+    scores = Score.objects.values("player_name").annotate(best=Max("score")).order_by("-best")[:10]
     return render(request, "leaderboard.html", {"scores": scores})

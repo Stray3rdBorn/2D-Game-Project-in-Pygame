@@ -18,3 +18,8 @@ class ScoreOut(BaseModel):
     wave_reached: int
     won: bool
     created_at: datetime
+
+class LeaderboardEntry(BaseModel):
+    rank: int
+    player_name: str
+    score: int

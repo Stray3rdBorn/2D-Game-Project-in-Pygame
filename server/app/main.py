@@ -4,13 +4,15 @@ from fastapi import Depends, FastAPI, Header, HTTPException, Query
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 
-from . import models, schemas
-from .database import Base, engine, get_db
+from . import models, ranking, schemas
+from .database import Base, SessionLocal, engine, get_db
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     Base.metadata.create_all(bind=engine)
+    with SessionLocal() as db:
+        ranking.rebuild(db)
     yield
 
 
@@ -40,14 +42,10 @@ def submit_score(
     db.add(score)
     db.commit()
     db.refresh(score)
+    ranking.record_score(db, user.id, score.player_name, score.score)
     return score
 
 
-@app.get("/leaderboard", response_model=list[schemas.ScoreOut])
+@app.get("/leaderboard", response_model=list[schemas.LeaderboardEntry])
 def leaderboard(limit: int = Query(10, ge=1, le=100), db: Session = Depends(get_db)):
-    query = (
-        select(models.Score)
-        .order_by(models.Score.score.desc(), models.Score.created_at)
-        .limit(limit)
-    )
-    return db.scalars(query).all()
+    return ranking.get_top(db, limit)
