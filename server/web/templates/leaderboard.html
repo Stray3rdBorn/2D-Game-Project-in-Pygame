@@ -4,21 +4,17 @@
   <tr>
     <th>Rank</th>
     <th>Player</th>
-    <th>Score</th>
-    <th>Wave</th>
-    <th>Won</th>
+    <th>Best score</th>
   </tr>
   {% for s in scores %}
   <tr>
     <td>{{ forloop.counter }}</td>
     <td>{{ s.player_name }}</td>
-    <td>{{ s.score }}</td>
-    <td>{{ s.wave_reached }}</td>
-    <td>{{ s.won|yesno:"Yes,No" }}</td>
+    <td>{{ s.best }}</td>
   </tr>
   {% empty %}
   <tr>
-    <td colspan="5">No scores yet.</td>
+    <td colspan="3">No scores yet.</td>
   </tr>
   {% endfor %}
 </table>
