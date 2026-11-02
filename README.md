@@ -2,9 +2,29 @@
 
 [![CI](https://github.com/Stray3rdBorn/2D-Game-Project/actions/workflows/ci.yml/badge.svg)](https://github.com/Stray3rdBorn/2D-Game-Project/actions/workflows/ci.yml)
 
-A 2D top down arena shooter built with Python and Pygame. Survive 10 waves of enemies that chase you across a single screen. Shoot them down, clear every wave to win, and beat your high score.
+A 2D top down arena shooter built with Python and Pygame, with an online leaderboard. Survive 10 waves of enemies that chase you across a single screen, clear every wave to win, and see how your best score ranks against other players.
 
 <!-- Add a screenshot or GIF here: ![Gameplay](docs/gameplay.png) -->
+
+## How the pieces fit together
+
+```
+Pygame game ──▶ FastAPI (port 8000) ──▶ PostgreSQL   permanent record of every score
+                        │
+                        └─────────────▶ Redis        fast ranking of best scores
+
+Browser ──────▶ Django (port 8001) ───▶ PostgreSQL   accounts, API keys, leaderboard page, admin
+```
+
+| Part          | Role                                                                                                 |
+| ------------- | ---------------------------------------------------------------------------------------------------- |
+| Pygame client | The game. Sends the final score to the API when a run ends                                           |
+| FastAPI       | `POST /scores` (needs an API key) and `GET /leaderboard`                                             |
+| Django        | Registration, login, API keys, profile page with your own runs, public leaderboard page, admin panel |
+| PostgreSQL    | Stores users, API keys and every submitted score                                                     |
+| Redis         | Sorted set holding each player's best score for instant ranking                                      |
+
+The leaderboard is read from Redis. If Redis is down or empty, the API falls back to PostgreSQL. Redis is rebuilt from PostgreSQL when the API starts, and also when a new score arrives and Redis is found empty.
 
 ## Gameplay
 
@@ -12,10 +32,10 @@ You control a blue circle in the middle of the arena. Enemies spawn just outside
 
 **Enemies**
 
-| Enemy | Color | HP | Size | Speed | Points |
-|---|---|---|---|---|---|
-| Grunt | Red | 1 | Small | Full wave speed | 10 |
-| Tank | Purple | 3 | Large | 60% of wave speed | 30 |
+| Enemy | Color  | HP  | Size  | Speed             | Points |
+| ----- | ------ | --- | ----- | ----------------- | ------ |
+| Grunt | Red    | 1   | Small | Full wave speed   | 10     |
+| Tank  | Purple | 3   | Large | 60% of wave speed | 30     |
 
 Tanks do not appear in wave 1. Each wave adds 10 percentage points to the chance that a spawn is a tank, up to a cap of 60% from wave 7 onward.
 
@@ -23,7 +43,6 @@ Tanks do not appear in wave 1. Each wave adds 10 percentage points to the chance
 
 - 5 HP at the start of a run.
 - Touching an enemy removes that enemy and costs 1 HP. You are then immune for 1 second, and the player blinks while immune.
-- Fires 10 shots per second with fast bullets.
 - Moves faster than any enemy, so running away always works.
 
 **Waves and scoring**
@@ -33,39 +52,25 @@ Tanks do not appear in wave 1. Each wave adds 10 percentage points to the chance
 - Each kill gives its enemy's points: 10 for a grunt, 30 for a tank.
 - Clearing wave `n` gives a bonus of `50 * n` points, followed by a 3 second break before the next wave.
 - Clearing wave 10 ends the game with a win. Dying on the same frame as the final kill counts as a loss.
-- The win screen shows your score, the HP you have left, and your high score.
 - Your best score is saved locally in `highscore.json` when a run ends, whether you win or lose.
-
-| Wave | Enemies | Enemy speed | Tank chance |
-|---|---|---|---|
-| 1 | 10 | 82 | 0% |
-| 2 | 15 | 94 | 10% |
-| 3 | 20 | 106 | 20% |
-| 4 | 25 | 118 | 30% |
-| 5 | 30 | 130 | 40% |
-| 6 | 35 | 142 | 50% |
-| 7 | 40 | 154 | 60% |
-| 8 | 45 | 166 | 60% |
-| 9 | 50 | 178 | 60% |
-| 10 | 55 | 190 | 60% |
 
 ## Controls
 
-| Action | Input |
-|---|---|
-| Move | `W` `A` `S` `D` or arrow keys |
-| Aim | Mouse |
-| Shoot | Hold left mouse button |
-| Start or restart | `Space` |
-| Quit | `Esc` or close the window |
+| Action           | Input                         |
+| ---------------- | ----------------------------- |
+| Move             | `W` `A` `S` `D` or arrow keys |
+| Aim              | Mouse                         |
+| Shoot            | Hold left mouse button        |
+| Start or restart | `Space`                       |
+| Quit             | `Esc` or close the window     |
 
-## Run locally
+## Run the game
 
 Requires Python 3.12 or newer.
 
 ```bash
-git clone <repository url>
-cd <repository folder>
+git clone https://github.com/Stray3rdBorn/2D-Game-Project.git
+cd 2D-Game-Project
 
 python -m venv venv
 venv\Scripts\activate          # Windows
@@ -75,27 +80,82 @@ pip install -r requirements.txt
 python client/main.py
 ```
 
-## Tests
+The game works fully offline. To upload scores, create `client/.env` with the key from your profile page on the website:
 
-The tests use pytest and run Pygame without a window, so they work on any machine, including servers.
-
-```bash
-pip install pytest
-pytest
+```
+ARENA_API_URL=http://127.0.0.1:8000
+ARENA_API_KEY=your-key-here
 ```
 
-They cover circle collision, screen bounds, equal speed on diagonals, hit immunity, bullets leaving the screen, enemy chasing, tank spawning rules, wave growth, tanks taking multiple hits, high score saving and recovery from a corrupted save file, and a 10 second headless run of the whole game.
+## Run the server
+
+Requires PostgreSQL and Redis (Memurai works as Redis on Windows).
+
+```bash
+cd server
+python -m venv venv
+venv\Scripts\activate          # Windows
+# source venv/bin/activate     # macOS and Linux
+
+pip install -r requirements.txt
+```
+
+Create `server/.env` from `server/.env.example` and fill in your database user, password and a random `SECRET_KEY`. Then:
+
+```bash
+# Terminal 1: score API at http://127.0.0.1:8000, interactive docs at /docs
+python -m uvicorn app.main:app --reload
+
+# Terminal 2: website at http://127.0.0.1:8001
+cd web
+python manage.py makemigrations accounts
+python manage.py migrate
+python manage.py createsuperuser
+python manage.py runserver 8001
+```
+
+### With Docker
+
+```bash
+docker compose up --build
+```
+
+This starts PostgreSQL, Redis, the API on port 8000 and the website on port 8001. Create an admin account with `docker compose exec web python manage.py createsuperuser`. The passwords in `docker-compose.yml` are for local development only.
+
+## API
+
+| Method and path             | Auth               | Description                                                                                             |
+| --------------------------- | ------------------ | ------------------------------------------------------------------------------------------------------- |
+| `GET /health`               | none               | Returns `{"status": "ok"}`                                                                              |
+| `POST /scores`              | `X-API-Key` header | Saves a run: `{"score": 1200, "wave_reached": 4, "won": false}`. The player name comes from the account |
+| `GET /leaderboard?limit=10` | none               | Best score per player, ranked, from Redis with a PostgreSQL fallback                                    |
+
+A missing or unknown key returns `401`. Invalid values return `422`.
+
+## Tests
+
+```bash
+# Game tests, from the project root
+pip install pytest
+pytest
+
+# Server tests, from the server folder
+cd server
+pip install -r requirements-dev.txt
+python -m pytest
+```
+
+The game tests run Pygame without a window and cover collision, screen bounds, movement, hit immunity, enemy chasing, tank spawning, wave growth, high score saving and a headless 10 second run. The server tests use an in memory database and an in memory Redis stand in, so they need no running services. They cover the key check, input validation, ranking by best score, the PostgreSQL fallback when Redis is empty, and the API continuing to work when Redis is down.
 
 ## Continuous integration
 
-A GitHub Actions workflow in `.github/workflows/ci.yml` runs on every push and pull request to `main`. It tests on Python 3.12 and 3.13 and does the following:
+`.github/workflows/ci.yml` runs on every push and pull request to `main`:
 
-1. Installs the dependencies.
-2. Fails the build on syntax errors and undefined names (flake8).
-3. Prints a style report that does not fail the build.
-4. Runs the test suite.
+1. **Game**: lint and tests on Python 3.12 and 3.13.
+2. **Server**: lint and tests on Python 3.12 and 3.13.
+3. **Docker**: builds the images with Docker Compose, starts the stack and checks that the API and website respond.
 
-## How it works
+## How the game works
 
 The whole game is one loop that runs 60 times per second: read input, update the game state, draw the frame, repeat.
 
@@ -111,15 +171,26 @@ The whole game is one loop that runs 60 times per second: read input, update the
 ```
 client/
     main.py              # The game: settings, Player, Bullet, Enemy, Game loop
+    api.py               # Sends the score to the API in a background thread
 tests/
-    test_game.py         # pytest suite, runs headless
-.github/
-    workflows/
-        ci.yml           # GitHub Actions workflow
-requirements.txt         # Python dependencies
+    test_game.py         # Game tests, run headless
+server/
+    app/
+        main.py          # FastAPI endpoints and API key check
+        models.py        # SQLAlchemy tables (scores) and read only views of Django tables
+        schemas.py       # Request and response shapes
+        database.py      # PostgreSQL connection
+        cache.py         # Redis connection
+        ranking.py       # Redis leaderboard with PostgreSQL fallback
+    web/                 # Django project: accounts, API keys, leaderboard page, admin
+    tests/               # Server tests
+    Dockerfile
+docker-compose.yml       # PostgreSQL, Redis, API and website
+.github/workflows/ci.yml # GitHub Actions workflow
+requirements.txt         # Game dependencies
 README.md
 ```
 
 ## Tech stack
 
-Python, Pygame, pytest, flake8, GitHub Actions
+Python, Pygame, FastAPI, Django, PostgreSQL, SQLAlchemy, Redis, Docker Compose, pytest, flake8, GitHub Actions
