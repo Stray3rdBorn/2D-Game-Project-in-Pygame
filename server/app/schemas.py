@@ -23,3 +23,20 @@ class LeaderboardEntry(BaseModel):
     rank: int
     player_name: str
     score: int
+
+class MyRank(BaseModel):
+    rank: int
+    player_name: str
+    score: int
+
+
+class LeaderboardOut(BaseModel):
+    entries: list[LeaderboardEntry]
+    me: MyRank | None = None
+
+
+class MeOut(BaseModel):
+    username: str
+    total_runs: int
+    best_score: int | None
+    rank: int | None
