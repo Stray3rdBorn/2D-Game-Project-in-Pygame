@@ -1,4 +1,4 @@
-# Arena Survival
+#2D Arena Survival Shooter
 
 [![CI](https://github.com/Stray3rdBorn/2D-Game-Project/actions/workflows/ci.yml/badge.svg)](https://github.com/Stray3rdBorn/2D-Game-Project/actions/workflows/ci.yml)
 
