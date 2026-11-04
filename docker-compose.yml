@@ -36,18 +36,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-  web:
-    build: ./server
-    working_dir: /srv/web
-    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8001"
-    environment:
-      DATABASE_URL: postgresql+psycopg://arena:arena_dev_pw@db:5432/arena
-      SECRET_KEY: dev-only-secret-change-me
-    ports:
-      - "8001:8001"
-    depends_on:
-      db:
-        condition: service_healthy
 
 volumes:
   pgdata:
