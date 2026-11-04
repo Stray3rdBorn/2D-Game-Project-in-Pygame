@@ -1,22 +1,4 @@
-import secrets
-
-from django.contrib.auth.models import User
 from django.db import models
-
-
-def generate_key():
-    return secrets.token_urlsafe(32)
-
-
-class ApiKey(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    key = models.CharField(max_length=64, unique=True, default=generate_key)
-
-    class Meta:
-        db_table = "api_keys"
-
-    def __str__(self):
-        return f"API key of {self.user.username}"
 
 
 class Score(models.Model):
