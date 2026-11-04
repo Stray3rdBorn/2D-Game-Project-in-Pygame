@@ -21,7 +21,7 @@ services:
       timeout: 3s
       retries: 15
 
-    api:
+  api:
     build: ./server
     command: sh -c "python web/manage.py migrate && uvicorn app.main:app --host 0.0.0.0 --port 8000"
     environment:
