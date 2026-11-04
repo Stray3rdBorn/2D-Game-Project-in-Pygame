@@ -113,7 +113,14 @@ jobs:
           done
           curl -fsS http://localhost:8000/health
           curl -fsS http://localhost:8000/leaderboard
-          curl -fsS -o /dev/null http://localhost:8001/
+          curl -fsS -o /dev/null http://localhost:8000/admin/login/
+
+      - name: Register, log in, submit a score and read the rank
+        run: |
+          curl -fsS -X POST http://localhost:8000/api/register -d '{"username":"smoke","password":"a-strong-pass-77"}'
+          TOKEN=$(curl -fsS -X POST http://localhost:8000/api/login -d '{"username":"smoke","password":"a-strong-pass-77"}' | python3 -c 'import sys,json;print(json.load(sys.stdin)["token"])')
+          curl -fsS -X POST http://localhost:8000/scores -H "Authorization: Bearer $TOKEN" -H "Content-Type: application/json" -d '{"score":500,"wave_reached":2,"won":false}'
+          curl -fsS http://localhost:8000/me -H "Authorization: Bearer $TOKEN" | grep '"rank":1'
 
       - name: Show container logs if something failed
         if: failure()

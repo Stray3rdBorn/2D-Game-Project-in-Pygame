@@ -18,5 +18,6 @@ servercmd.txt
 .DS_Store
 Thumbs.db
 
+server/web/staticfiles/
 
 .env

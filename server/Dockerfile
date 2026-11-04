@@ -6,6 +6,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . .
+# Collect the admin page CSS so the server can serve it
+RUN SECRET_KEY=build DATABASE_URL=sqlite:// python web/manage.py collectstatic --noinput
 
 EXPOSE 8000
 

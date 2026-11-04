@@ -21,11 +21,14 @@ services:
       timeout: 3s
       retries: 15
 
-  api:
+    api:
     build: ./server
+    command: sh -c "python web/manage.py migrate && uvicorn app.main:app --host 0.0.0.0 --port 8000"
     environment:
       DATABASE_URL: postgresql+psycopg://arena:arena_dev_pw@db:5432/arena
       REDIS_URL: redis://redis:6379/0
+      SECRET_KEY: dev-only-secret-change-me
+      JWT_SECRET: dev-only-jwt-secret-change-me-please-32-bytes
     ports:
       - "8000:8000"
     depends_on:
@@ -33,7 +36,6 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
-
   web:
     build: ./server
     working_dir: /srv/web
