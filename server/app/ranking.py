@@ -53,3 +53,17 @@ def get_top(db: Session, limit: int):
         {"rank": rank, "player_name": player_name, "score": score}
         for rank, (_, player_name, score) in enumerate(rows, start=1)
     ]
+
+def get_rank(db: Session, user_id, player_name):
+    member = f"{user_id}:{player_name}"
+    try:
+        position = cache.redis_client.zrevrank(cache.LEADERBOARD_KEY, member)
+        score = cache.redis_client.zscore(cache.LEADERBOARD_KEY, member)
+    except redis.RedisError:
+        position = score = None
+    if position is not None and score is not None:
+        return {"rank": position + 1, "player_name": player_name, "score": int(score)}
+    for rank, (row_user_id, row_name, row_score) in enumerate(best_per_player(db), start=1):
+        if row_user_id == user_id:
+            return {"rank": rank, "player_name": row_name, "score": row_score}
+    return None
