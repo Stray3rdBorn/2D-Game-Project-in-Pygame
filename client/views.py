@@ -79,18 +79,18 @@ class MenuScreen(Screen):
 
     def on_enter(self, **data):
         manager = self.manager
-        items = [("Start Game", lambda: manager.switch("play"), (124, 252, 0), (90, 185, 0))]
+        items = [("Start Game", lambda: manager.switch("play"), (40, 167, 69), (30, 126, 52))]   #green 
         if manager.session.logged_in:
             items += [
-                ("Dashboard", lambda: manager.switch("dashboard")),
-                ("Leaderboard", lambda: manager.switch("leaderboard")),
-                ("Log out", self.log_out),
+                ("Dashboard", lambda: manager.switch("dashboard"), (242, 142, 43), (211, 118, 28)),    #orange
+                ("Leaderboard", lambda: manager.switch("leaderboard"), (242, 142, 43), (211, 118, 28)), #orange
+                ("Log out", self.log_out, (220, 53, 69), (167, 29, 42)), #red
             ]
         else:
             items += [
-                ("Log in", lambda: manager.switch("login")),
-                ("Register", lambda: manager.switch("register")),
-                ("Leaderboard", lambda: manager.switch("leaderboard")),
+                ("Log in", lambda: manager.switch("login"), (255, 193, 7), (210, 150, 0)), #yellow
+                ("Register", lambda: manager.switch("register"), (255, 193, 7), (210, 150, 0)), #yellow
+                ("Leaderboard", lambda: manager.switch("leaderboard"), (242, 142, 43), (211, 118, 28)), #orange
             ]
         self.buttons = stacked_buttons(manager, self.fonts["normal"], items, 270)
 
@@ -129,8 +129,8 @@ class AuthScreen(Screen):
         self.username = ui.TextInput((CENTER - 150, 250, 300, 42), font, max_length=name_limit, placeholder="Username")
         self.password = ui.TextInput((CENTER - 150, 310, 300, 42), font, max_length=128, hidden=True,
                                      placeholder="Password")
-        self.submit = ui.Button((CENTER - 150, 380, 300, BUTTON_HEIGHT), self.title, font, self.send, (124, 252, 0), (90, 185, 0))
-        self.back = back_button(font, self.go_back, top=440, color=(255, 0, 0), hover_color=(255, 80, 80))
+        self.submit = ui.Button((CENTER - 150, 380, 300, BUTTON_HEIGHT), self.title, font, self.send, (124, 252, 0), (90, 185, 0)) #green
+        self.back = back_button(font, self.go_back, top=440, color=(220, 53, 69), hover_color=(167, 29, 42))
         self.message = ""
         self.busy = False
 
@@ -203,7 +203,7 @@ class LeaderboardScreen(Screen):
     def __init__(self, manager, fonts):
         super().__init__(manager)
         self.fonts = fonts
-        self.back = back_button(fonts["normal"], lambda: manager.switch("menu"), (255, 0, 0), (255, 80, 80))
+        self.back = back_button(fonts["normal"], lambda: manager.switch("menu"), (220, 53, 69), (167, 29, 42))
         self.rows = []
         self.status = ""
 
@@ -239,7 +239,7 @@ class DashboardScreen(Screen):
     def __init__(self, manager, fonts):
         super().__init__(manager)
         self.fonts = fonts
-        self.back = back_button(fonts["normal"], lambda: manager.switch("menu"), (255, 0, 0), (255, 80, 80))
+        self.back = back_button(fonts["normal"], lambda: manager.switch("menu"), (220, 53, 69), (167, 29, 42))
         self.lines = []
         self.status = ""
 
@@ -288,11 +288,11 @@ class GameOverScreen(Screen):
         super().__init__(manager)
         self.fonts = fonts
         font = fonts["normal"]
-        self.play_again = ui.Button((0, 0, 190, 44), "Play again", font, lambda: manager.switch("play"), (124, 252, 0), (90, 185, 0))
-        self.menu = ui.Button((0, 0, 190, 44), "Menu", font, lambda: manager.switch("menu"), (124, 252, 0), (90, 185, 0))
-        self.login = ui.Button((0, 0, 190, 44), "Log in", font, lambda: manager.switch("login"), (124, 252, 0), (90, 185, 0))
-        self.register = ui.Button((0, 0, 190, 44), "Register", font, lambda: manager.switch("register"), (124, 252, 0), (90, 185, 0))
-        self.retry = ui.Button((0, 0, 190, 44), "Retry", font, self.save_run, (124, 252, 0), (90, 185, 0))
+        self.play_again = ui.Button((0, 0, 190, 44), "Play again", font, lambda: manager.switch("play"), (40, 167, 69), (30, 126, 52)) #green
+        self.menu = ui.Button((0, 0, 190, 44), "Menu", font, lambda: manager.switch("menu"), (242, 142, 43), (211, 118, 28)) #orange
+        self.login = ui.Button((0, 0, 190, 44), "Log in", font, lambda: manager.switch("login"), (255, 193, 7), (210, 150, 0)) #yellow
+        self.register = ui.Button((0, 0, 190, 44), "Register", font, lambda: manager.switch("register"), (255, 193, 7), (210, 150, 0)) #yellow
+        self.retry = ui.Button((0, 0, 190, 44), "Retry", font, self.save_run, (40, 167, 69), (30, 126, 52)) #green
         self.rows = []
         self.status = ""
         self.board_status = ""
@@ -318,7 +318,7 @@ class GameOverScreen(Screen):
             run = manager.pending_run
             manager.network.submit_score(manager.session.token, run["score"], run["wave"], run["won"], self.on_saved)
         elif manager.pending_run:
-            self.status = "Log in or register to save this run"
+            self.status = "Log in or register to save this run."
             self.load_board()
         else:
             self.status = "Run saved"
@@ -331,7 +331,7 @@ class GameOverScreen(Screen):
             self.status = "Run saved"
         elif result.expired:
             manager.session.logout()
-            self.status = "Session expired. Log in to save this run"
+            self.status = "Session expired. Log in to save this run."
         else:
             self.status = result.error
             self.failed = True
