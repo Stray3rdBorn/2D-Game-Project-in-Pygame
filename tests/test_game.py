@@ -25,9 +25,7 @@ class Keys(dict):
 
 @pytest.fixture(autouse=True)
 def isolated_highscore(tmp_path, monkeypatch):
-    # Tests must never touch the real highscore.json
     monkeypatch.setattr(main, "HIGHSCORE_FILE", tmp_path / "highscore.json")
-    monkeypatch.setattr(main, "submit_score", lambda *args: None)
 
 
 def test_collides_when_circles_overlap():
