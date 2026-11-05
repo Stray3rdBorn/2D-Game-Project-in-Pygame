@@ -23,12 +23,14 @@ class Label:
 
 
 class Button:
-    def __init__(self, rect, text, font, on_click):
+    def __init__(self, rect, text, font, on_click, color, hover_color):
         self.rect = pygame.Rect(rect)
         self.text = text
         self.font = font
         self.on_click = on_click
         self.enabled = True
+        self.color = color
+        self.hover_color = hover_color
 
     def handle_event(self, event):
         if not self.enabled:
@@ -40,9 +42,9 @@ class Button:
         if not self.enabled:
             color = BUTTON_OFF
         elif self.rect.collidepoint(pygame.mouse.get_pos()):
-            color = BUTTON_HOVER
+            color = self.hover_color
         else:
-            color = BUTTON_COLOR
+            color = self.color
         pygame.draw.rect(surface, color, self.rect, border_radius=6)
         image = self.font.render(self.text, True, TEXT_COLOR if self.enabled else GREY_TEXT)
         surface.blit(image, image.get_rect(center=self.rect.center))
