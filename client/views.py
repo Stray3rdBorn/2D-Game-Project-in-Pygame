@@ -103,14 +103,14 @@ class MenuScreen(Screen):
             button.handle_event(event)
 
     def draw(self, surface):
-        draw_text(surface, self.fonts["big"], "ARENA SURVIVAL", WHITE, center=(CENTER, 110))
+        draw_text(surface, self.fonts["big"], "DecaDome", WHITE, center=(CENTER, 110))
         draw_text(surface, self.fonts["small"], "Move: WASD or arrows   Aim: mouse   Shoot: hold left click",
                   GREY, center=(CENTER, 175))
         session = self.manager.session
         if session.logged_in:
             draw_text(surface, self.fonts["small"], f"Logged in as {session.username}", GREEN, center=(CENTER, 215))
         else:
-            draw_text(surface, self.fonts["small"], "Guest: log in to get on the leaderboard", YELLOW,
+            draw_text(surface, self.fonts["small"], "Log in to get on the leaderboard", YELLOW,
                       center=(CENTER, 215))
         for button in self.buttons:
             button.draw(surface)

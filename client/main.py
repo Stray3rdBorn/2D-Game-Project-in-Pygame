@@ -138,7 +138,7 @@ class Game:
     def __init__(self):
         pygame.init()
         self.screen = pygame.display.set_mode((WIDTH, HEIGHT))
-        pygame.display.set_caption("Arena Survival")
+        pygame.display.set_caption("DecaDome")
         self.clock = pygame.time.Clock()
         self.font = pygame.font.SysFont(None, 32)
         self.big_font = pygame.font.SysFont(None, 80)
@@ -254,7 +254,7 @@ class Game:
         self.screen.blit(surface, surface.get_rect(center=center))
 
     def draw_menu(self):
-        self.draw_text("ARENA SURVIVAL", self.big_font, (255, 255, 255), (WIDTH / 2, 200))
+        self.draw_text("DecaDome", self.big_font, (255, 255, 255), (WIDTH / 2, 200))
         self.draw_text("Move: WASD or arrows   Aim: mouse   Shoot: hold left click",
                        self.font, (190, 190, 200), (WIDTH / 2, 300))
         self.draw_text("Press SPACE to start", self.font, (255, 230, 90), (WIDTH / 2, 380))
