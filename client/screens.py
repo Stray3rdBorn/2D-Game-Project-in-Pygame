@@ -21,6 +21,8 @@ class ScreenManager:
         self.network = network
         self.screens = {}
         self.current = None
+        self.last_run = None
+        self.pending_run = None
 
     def add(self, name, screen):
         self.screens[name] = screen

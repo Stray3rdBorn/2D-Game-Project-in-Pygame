@@ -55,9 +55,12 @@ class Session:
         return self.token is not None
 
     def login(self, token, username):
-        save_session(token, username)
         self.token = token
         self.username = username
+        try:
+            save_session(token, username)
+        except OSError:
+            pass
 
     def logout(self):
         clear_session()

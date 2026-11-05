@@ -1,7 +1,6 @@
 import json
 import random           # for random enemy spawn positions and tank chance
 from pathlib import Path
-from api import submit_score
 
 import pygame
 
@@ -175,14 +174,12 @@ class Game:
         if self.score > self.highscore:
             self.highscore = self.score
             save_highscore(self.highscore)
-        submit_score(self.score, self.wave, False)
         self.state = "game_over"
 
     def win_game(self):
         if self.score > self.highscore:
             self.highscore = self.score
             save_highscore(self.highscore)
-        submit_score(self.score, self.wave, True)
         self.state = "victory"
 
     def spawn_enemy(self):
