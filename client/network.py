@@ -6,10 +6,12 @@ from urllib.parse import urlparse
 
 import requests
 from dotenv import load_dotenv
+import server_address
 
 load_dotenv()
 
-API_URL = os.getenv("ARENA_API_URL", "http://127.0.0.1:8000")
+# the environment variable wins, so I can test against another server without editing files
+API_URL = os.getenv("ARENA_API_URL", server_address.API_URL)
 # the free server sleeps and needs about a minute to wake up, so wait long for an answer
 TIMEOUT = 70
 

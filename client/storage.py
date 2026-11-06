@@ -2,9 +2,10 @@ import base64
 import json
 import os
 import time
-from pathlib import Path
+from paths import data_folder
 
-SESSION_FILE = Path(os.getenv("APPDATA") or Path.home()) / "ArenaSurvival" / "session.json"
+# the login token is saved in the game's own folder
+SESSION_FILE = data_folder() / "session.json"
 
 
 def token_expiry(token):

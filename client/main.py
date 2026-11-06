@@ -1,13 +1,14 @@
 import json
 import random           # for random enemy spawn positions and tank chance
-from pathlib import Path
+
+from paths import data_folder
 
 import pygame
 
 # Window
 WIDTH, HEIGHT = 900, 650
 FPS = 60
-HIGHSCORE_FILE = Path(__file__).parent / "highscore.json"
+HIGHSCORE_FILE = data_folder() / "highscore.json"   # saved in the game folder in app data, not next to the code
 
 # Player
 PLAYER_SPEED = 300      # pixels per second
@@ -39,6 +40,7 @@ def load_highscore():    # returns the highscore from the file, or 0 if the file
 
 
 def save_highscore(score):  #saves the highscore to the file
+    HIGHSCORE_FILE.parent.mkdir(parents=True, exist_ok=True)   # the folder may not exist on the first run
     HIGHSCORE_FILE.write_text(json.dumps({"highscore": score}))
 
 
