@@ -27,7 +27,14 @@ def key(character, code=None):
 
 def test_button_calls_back_only_when_clicked_inside(font):
     hits = []
-    button = ui.Button((10, 10, 100, 40), "Go", font, lambda: hits.append(1))
+    button = ui.Button(
+    (10, 10, 100, 40),
+    "Go",
+    font,
+    lambda: hits.append(1),
+    ui.BUTTON_COLOR,
+    ui.BUTTON_HOVER,
+)
     button.handle_event(click(20, 20))
     button.handle_event(click(200, 20))
     button.handle_event(click(20, 20, button=3))
@@ -36,7 +43,14 @@ def test_button_calls_back_only_when_clicked_inside(font):
 
 def test_disabled_button_ignores_clicks(font):
     hits = []
-    button = ui.Button((10, 10, 100, 40), "Go", font, lambda: hits.append(1))
+    button = ui.Button(
+        (10, 10, 100, 40),
+        "Go",
+        font,
+        lambda: hits.append(1),
+        ui.BUTTON_COLOR,
+        ui.BUTTON_HOVER,
+    )
     button.enabled = False
     button.handle_event(click(20, 20))
     assert hits == []
@@ -105,7 +119,14 @@ def test_widgets_draw_without_errors(font):
     surface = pygame.display.get_surface()
     widgets = [
         ui.Label("Hello", font, ui.TEXT_COLOR, (150, 20)),
-        ui.Button((10, 50, 100, 40), "Go", font, lambda: None),
+        ui.Button(
+    (10, 50, 100, 40),
+    "Go",
+    font,
+    lambda: None,
+    ui.BUTTON_COLOR,
+    ui.BUTTON_HOVER,
+),
         ui.TextInput((10, 100, 200, 30), font, placeholder="Name"),
     ]
     widgets[2].focused = True
