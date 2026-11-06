@@ -20,4 +20,8 @@ Thumbs.db
 
 server/web/staticfiles/
 
+build/
+dist/
+*.spec
+
 .env

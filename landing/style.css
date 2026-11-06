@@ -6,6 +6,7 @@
   --text: #ebebf0;
   --muted: #8c8ca0;
   --yellow: #ffe65a;
+  --orange: #ffb347;
   --red: #eb5050;
 }
 
@@ -129,9 +130,9 @@ td:nth-child(2) {
   overflow-wrap: anywhere;
 }
 
-/* the first place is yellow */
+/* the first place is orange */
 tbody tr:first-child td {
-  color: var(--yellow);
+  color: var(--orange);
 }
 
 tbody tr:last-child td {
@@ -162,4 +163,44 @@ footer a {
   td {
     padding: 10px 10px;
   }
+}
+
+/* download button and the SmartScreen help */
+.download {
+  margin: 32px 0;
+  text-align: center;
+}
+
+.button {
+  display: inline-block;
+  padding: 14px 28px;
+  border-radius: 8px;
+  background: var(--yellow);
+  color: var(--background);
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.download p,
+.download summary {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.download details {
+  margin-top: 12px;
+  text-align: left;
+}
+
+.download summary {
+  cursor: pointer;
+  text-align: center;
+}
+
+.download code {
+  word-break: break-all;
+}
+
+.download details a {
+  color: var(--yellow);
 }

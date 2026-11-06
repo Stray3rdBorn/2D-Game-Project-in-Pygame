@@ -15,12 +15,39 @@
   <body>
     <main>
       <header>
-        <p class="tag">2D arena shooter</p>
+        <p class="tag">2D arena survival shooter</p>
         <h1>DecaDome</h1>
         <p class="lead">
           Survive ten waves of enemies, then climb the global leaderboard.
         </p>
       </header>
+
+      <!-- the download button points at the newest release on GitHub -->
+      <section class="download" aria-label="Download">
+        <a
+          class="button"
+          href="https://github.com/Stray3rdBorn/2D-Game-Project-in-Pygame/releases/latest/download/DecaDome.exe"
+          >Download for Windows</a
+        >
+        <p>Windows 10 or 11, about 40 MB, free.</p>
+        <details>
+          <summary>Windows says "Windows protected your PC"?</summary>
+          <p>
+            I have not paid for a code signing certificate, so SmartScreen warns
+            about new files. Click <strong>More info</strong>, then
+            <strong>Run anyway</strong>.
+          </p>
+          <p>
+            To check the file is the one I built, download
+            <a
+              href="https://github.com/Stray3rdBorn/2D-Game-Project-in-Pygame/releases/latest/download/DecaDome.exe.sha256"
+              >the checksum file</a
+            >
+            and run <code>certutil -hashfile DecaDome.exe SHA256</code> in
+            PowerShell. The two values must match.
+          </p>
+        </details>
+      </section>
 
       <!-- the three controls of the game -->
       <section class="controls" aria-label="Controls">
