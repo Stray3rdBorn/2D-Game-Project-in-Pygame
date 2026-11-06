@@ -150,3 +150,19 @@ def test_each_helper_sends_the_right_request(sent):
     ])
     score_call = next(c for c in sent if c["url"].endswith("/scores"))
     assert score_call["json"] == {"score": 500, "wave_reached": 3, "won": True}
+
+    
+
+def test_the_timeout_is_long_enough_for_a_sleeping_free_server():
+    # need at least a minute because the free server takes that long to wake up
+    assert network.TIMEOUT >= 60
+
+
+def test_wake_sends_one_health_request_in_the_background(sent):
+    net = network.Network()
+    net.wake()
+    deadline = time.time() + 2
+    while not sent and time.time() < deadline:
+        time.sleep(0.01)
+    net.poll()
+    assert [(call["method"], call["url"]) for call in sent] == [("GET", "http://127.0.0.1:8000/health")]
