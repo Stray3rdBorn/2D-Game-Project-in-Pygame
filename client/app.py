@@ -22,7 +22,10 @@ def build(game, session, network):
 
 def run():
     game = Game()
-    manager = build(game, Session(), Network())
+    network = Network()
+    # wake the server in the background while the menu is showing
+    network.wake()
+    manager = build(game, Session(), network)
     manager.switch("menu")
     running = True
     while running:
