@@ -1,0 +1,165 @@
+/* colors are the same as the game window */
+:root {
+  --background: #14141c;
+  --card: #1e1e2a;
+  --border: #2c2c3c;
+  --text: #ebebf0;
+  --muted: #8c8ca0;
+  --yellow: #ffe65a;
+  --red: #eb5050;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--text);
+  font-family: system-ui, "Segoe UI", Roboto, sans-serif;
+  line-height: 1.5;
+}
+
+/* one centered column, 16px space on the sides for phones */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 48px 16px;
+}
+
+header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.tag {
+  margin: 0 0 8px;
+  color: var(--yellow);
+  font-size: 0.85rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+h1 {
+  margin: 0;
+  font-size: clamp(2.4rem, 9vw, 4rem);
+  line-height: 1.1;
+  color: var(--red);
+}
+
+.lead {
+  margin: 16px 0 0;
+  color: var(--muted);
+  font-size: 1.1rem;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-bottom: 40px;
+}
+
+.controls div {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 16px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.controls span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: 1.4rem;
+}
+
+#status {
+  margin: 0 0 12px;
+  color: var(--muted);
+}
+
+#status:empty {
+  display: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  overflow: hidden;
+  font-variant-numeric: tabular-nums;
+}
+
+th,
+td {
+  padding: 10px 16px;
+  text-align: left;
+  border-bottom: 1px solid var(--border);
+}
+
+th {
+  color: var(--muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* rank and score are numbers, so they line up on the right */
+th:first-child,
+td:first-child,
+th:last-child,
+td:last-child {
+  text-align: right;
+  width: 1%;
+  white-space: nowrap;
+}
+
+/* a long name with no spaces breaks into lines instead of widening the page */
+td:nth-child(2) {
+  overflow-wrap: anywhere;
+}
+
+/* the first place is yellow */
+tbody tr:first-child td {
+  color: var(--yellow);
+}
+
+tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 48px;
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: var(--text);
+}
+
+/* on small phones the three controls stack and the table gets tighter */
+@media (max-width: 560px) {
+  .controls {
+    grid-template-columns: 1fr;
+  }
+
+  th,
+  td {
+    padding: 10px 10px;
+  }
+}

@@ -1,0 +1,6 @@
+# security headers for every page, the connect-src address must match API_URL in script.js
+/*
+  Content-Security-Policy: default-src 'none'; script-src 'self'; style-src 'self'; connect-src https://YOUR-API-NAME.onrender.com; base-uri 'none'; form-action 'none'; frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: no-referrer
+  X-Frame-Options: DENY

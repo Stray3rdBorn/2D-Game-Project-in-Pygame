@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Arena Survival</title>
+    <meta
+      name="description"
+      content="A 2D arena survival shooter. Survive ten waves and climb the global leaderboard."
+    />
+    <!-- all my styling is in one file so the page needs no inline styles -->
+    <link rel="stylesheet" href="style.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <main>
+      <header>
+        <p class="tag">2D arena shooter</p>
+        <h1>Arena Survival</h1>
+        <p class="lead">
+          Survive ten waves of enemies, then climb the global leaderboard.
+        </p>
+      </header>
+
+      <!-- the three controls of the game -->
+      <section class="controls" aria-label="Controls">
+        <div><strong>Move</strong><span>WASD or arrow keys</span></div>
+        <div><strong>Aim</strong><span>Mouse</span></div>
+        <div><strong>Shoot</strong><span>Hold left click</span></div>
+      </section>
+
+      <!-- the rows of this table are filled in by script.js -->
+      <section class="board">
+        <h2>Top 10</h2>
+        <p id="status" role="status"></p>
+        <table>
+          <thead>
+            <tr>
+              <th>Rank</th>
+              <th>Player</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody id="rows"></tbody>
+        </table>
+        <noscript><p>The leaderboard needs JavaScript.</p></noscript>
+      </section>
+
+      <footer>
+        <a href="https://github.com/Stray3rdBorn/2D-Game-Project-in-Pygame"
+          >Source code on GitHub</a
+        >
+        <span>Pygame, FastAPI, Django, PostgreSQL, Redis</span>
+      </footer>
+    </main>
+  </body>
+</html>
