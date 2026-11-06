@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 import os
 from pathlib import Path
-from urllib.parse import  parse_qsl, parse_sql, urlparse
+from urllib.parse import  parse_qsl, urlparse
 
 from dotenv import load_dotenv
 
