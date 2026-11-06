@@ -170,3 +170,28 @@ def test_rebuild_restores_redis_from_the_database(client, make_user, db_session,
     fake_redis.flushall()
     ranking.rebuild(db_session)
     assert fake_redis.zcard(cache.LEADERBOARD_KEY) == 1
+
+    
+
+# CORS: which websites may read the API from a browser
+def test_my_landing_page_may_read_the_leaderboard(client):
+    response = client.get("/leaderboard", headers={"Origin": "https://arena-test.pages.dev"})
+    assert response.headers["access-control-allow-origin"] == "https://arena-test.pages.dev"
+
+
+def test_other_websites_get_no_permission(client):
+    response = client.get("/leaderboard", headers={"Origin": "https://evil.example.com"})
+    assert "access-control-allow-origin" not in response.headers
+
+
+def test_cookies_are_never_allowed_across_websites(client):
+    response = client.get("/leaderboard", headers={"Origin": "https://arena-test.pages.dev"})
+    assert "access-control-allow-credentials" not in response.headers
+
+
+def test_a_browser_may_not_post_scores_from_another_website(client):
+    preflight = client.options(
+        "/scores",
+        headers={"Origin": "https://arena-test.pages.dev", "Access-Control-Request-Method": "POST"},
+    )
+    assert preflight.status_code == 400

@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 os.environ["DATABASE_URL"] = "sqlite://"
 os.environ["SECRET_KEY"] = "test-secret-key"
 os.environ["JWT_SECRET"] = "test-jwt-secret-that-is-long-enough-for-hs256"
+os.environ["CORS_ORIGINS"] = "https://arena-test.pages.dev"
 
 import fakeredis  # noqa: E402
 import jwt  # noqa: E402
