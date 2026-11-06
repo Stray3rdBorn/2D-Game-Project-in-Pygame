@@ -1,8 +1,10 @@
+import os
 from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI, Query
 from sqlalchemy import func, select
 from sqlalchemy.orm import Session
+from fastapi.middleware.cors import CORSMiddleware
 
 from . import models, ranking, schemas
 from .auth import CurrentUser, get_current_user, get_optional_user
@@ -20,6 +22,10 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(title="Arena Survival API", lifespan=lifespan)
 
+
+# only my landing page may read the leaderboard from a browser, and only with GET
+allowed_origins = [origin for origin in os.getenv("CORS_ORIGINS", "").split(",") if origin]
+app.add_middleware(CORSMiddleware, allow_origins=allowed_origins, allow_methods=["GET"])
 
 @app.get("/health")
 def health():
