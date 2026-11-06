@@ -59,6 +59,10 @@ class Network:
 
         threading.Thread(target=work, daemon=True).start()
 
+    # call this once when the game starts so the sleeping server begins to wake up early
+    def wake(self):
+        self.start(lambda result: None, call, "GET", "/health")
+
     def poll(self):
         while True:
             try:
