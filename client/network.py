@@ -10,7 +10,8 @@ from dotenv import load_dotenv
 load_dotenv()
 
 API_URL = os.getenv("ARENA_API_URL", "http://127.0.0.1:8000")
-TIMEOUT = 5
+# the free server sleeps and needs about a minute to wake up, so wait long for an answer
+TIMEOUT = 70
 
 
 @dataclass
