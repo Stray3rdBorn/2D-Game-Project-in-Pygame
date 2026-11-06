@@ -12,7 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 import os
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import  parse_qsl, parse_sql, urlparse
 
 from dotenv import load_dotenv
 
@@ -25,13 +25,27 @@ load_dotenv()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
+# SECURITY WARNING: keep the secret key used in production secret
 SECRET_KEY = os.environ["SECRET_KEY"]
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# only turn debug on when DEBUG=1 is set, so the real server is safe by default
+DEBUG = os.getenv("DEBUG") == "1"
 
-ALLOWED_HOSTS = []
+# hosts the server answers to, localhost is the default for my own computer
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS", "localhost,127.0.0.1").split(",")
+
+# https addresses allowed to send the admin login form, they come from the environment
+CSRF_TRUSTED_ORIGINS = [origin for origin in os.getenv("CSRF_TRUSTED_ORIGINS", "").split(",") if origin]
+
+# extra protection that only makes sense on the real https server
+if not DEBUG:
+    # Render handles https and tells Django with this header that the request was secure
+    SECURE_PROXY_SSL_HEADER = ("HTTP_X_FORWARDED_PROTO", "https")
+    # cookies only travel over https
+    SESSION_COOKIE_SECURE = True
+    CSRF_COOKIE_SECURE = True
+    # browsers must use https for this site for one year
+    SECURE_HSTS_SECONDS = 31536000
 
 
 # Application definition
@@ -93,6 +107,8 @@ else:
             "PASSWORD": db.password,
             "HOST": db.hostname,
             "PORT": db.port,
+            # pass extra parts of the address, like sslmode=require, to the database driver
+            "OPTIONS": dict(parse_qsl(db.query)),
         }
     }
 
