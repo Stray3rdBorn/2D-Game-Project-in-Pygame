@@ -1,5 +1,4 @@
-// address of my server, I will change this after the server is deployed
-const API_URL = "https://YOUR-API-NAME.onrender.com";
+const API_URL = "https://decadome.onrender.com";
 
 const statusLine = document.getElementById("status");
 const rows = document.getElementById("rows");
