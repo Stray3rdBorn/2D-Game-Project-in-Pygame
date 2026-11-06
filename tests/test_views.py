@@ -50,7 +50,7 @@ class FakeNetwork:
 
 @pytest.fixture(autouse=True)
 def isolated(tmp_path, monkeypatch):
-    monkeypatch.setattr(storage, "SESSION_FILE", tmp_path / "ArenaSurvival" / "session.json")
+    monkeypatch.setattr(storage, "SESSION_FILE", tmp_path / "DecaDome" / "session.json")
     monkeypatch.setattr(main, "HIGHSCORE_FILE", tmp_path / "highscore.json")
 
 

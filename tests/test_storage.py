@@ -16,7 +16,7 @@ def make_token(expires_in):
 @pytest.fixture(autouse=True)
 def temp_session_file(tmp_path, monkeypatch):
     # Tests must never touch the real session file
-    monkeypatch.setattr(storage, "SESSION_FILE", tmp_path / "ArenaSurvival" / "session.json")
+    monkeypatch.setattr(storage, "SESSION_FILE", tmp_path / "DecaDome" / "session.json")
 
 
 def test_token_expiry_reads_the_exp_claim():
