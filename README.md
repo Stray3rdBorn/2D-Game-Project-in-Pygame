@@ -288,7 +288,7 @@ Every tool below has one job. The "why" column is the reason I picked it for thi
 ├── docs/                        documents about the project
 │   ├── PROJECT_STRUCTURE.md     the same folder map with notes on each file
 │   ├── SECURITY_LOG.md          every security issue: covered, how, and still open
-│   └── screenshots/             my screenshots and GIF for this README (I add these)
+│   └── screenshots/             game screenshots for this README
 │
 ├── .github/workflows/
 │   ├── ci.yml                   tests, lint and the Docker smoke test on every push
