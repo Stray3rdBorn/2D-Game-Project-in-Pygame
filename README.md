@@ -621,4 +621,4 @@ MIT. See [LICENSE](LICENSE).
 
 ## Contact
 
-I am Stray ([Stray3rdBorn](https://github.com/Stray3rdBorn) on GitHub). For bugs and questions about the project, open an issue in this repository.
+I am Wahid, ([Stray3rdBorn](https://github.com/Stray3rdBorn) on GitHub). For bugs and questions about the project, open an issue in this repository.
