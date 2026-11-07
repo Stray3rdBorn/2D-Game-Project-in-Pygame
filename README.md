@@ -48,12 +48,17 @@ Gameplay screenshots
 <a href="docs/screenshots/menu1.png"><img src="docs/screenshots/menu1.png" width="150" alt="Main menu"></a> 
 <a href="docs/screenshots/menu2.png"><img src="docs/screenshots/menu2.png" width="150" alt="Main menu"></a> 
 <a href="docs/screenshots/gameplay.png"><img src="docs/screenshots/gameplay.png" width="150" alt="Gameplay"></a> 
+</p>
+<p align="center"> 
 <a href="docs/screenshots/login.png"><img src="docs/screenshots/login.png" width="150" alt="Login"></a> 
 <a href="docs/screenshots/register.png"><img src="docs/screenshots/register.png" width="150" alt="Register"></a> 
 <a href="docs/screenshots/leaderboard.png"><img src="docs/screenshots/leaderboard.png" width="150" alt="Leaderboard"></a> 
+</p>
+<p align="center"> 
 <a href="docs/screenshots/dashboard.png"><img src="docs/screenshots/dashboard.png" width="150" alt="Dashboard"></a> 
-<a href="docs/screenshots/game-over1.png"><img src="docs/screenshots/game-over1.png" width="150" alt="Game over"></a> </p>
-<a href="docs/screenshots/game-over2.png"><img src="docs/screenshots/game-over2.png" width="150" alt="Game over"></a> </p>
+<a href="docs/screenshots/game-over1.png"><img src="docs/screenshots/game-over1.png" width="150" alt="Game over"></a> 
+<a href="docs/screenshots/game-over2.png"><img src="docs/screenshots/game-over2.png" width="150" alt="Game over"></a> 
+</p>
 
 ## Features
 
