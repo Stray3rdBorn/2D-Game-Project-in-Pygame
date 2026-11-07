@@ -614,7 +614,6 @@ The whole game is one loop that runs 60 times per second: read input, update the
 
 - A boss enemy, saved for later.
 - A login attempt limit (B6), a second password box (B12) and Dependabot (B14), the three items I would do first.
-- Gameplay screenshots and a GIF for this README.
 
 ## License
 
