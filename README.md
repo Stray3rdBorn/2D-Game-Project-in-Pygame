@@ -44,15 +44,16 @@ The API runs on a free hosting plan. After 15 minutes without a visitor it goes 
 
 Gameplay screenshots
 
-![Main menu](docs/screenshots/menu1.png)
-![Main menu](docs/screenshots/menu2.png)
-![Gameplay](docs/screenshots/gameplay.png)
-![Leaderboard](docs/screenshots/leaderboard.png)
-![Dashboard](docs/screenshots/dashboard.png)
-![Game over](docs/screenshots/game-over1.png)
-![Game over](docs/screenshots/game-over2.png)
-![Login](docs/screenshots/login.png)
-![Register](docs/screenshots/register.png)
+<p align="center"> 
+<a href="docs/screenshots/menu1.png"><img src="docs/screenshots/menu1.png" width="150" alt="Main menu"></a> 
+<a href="docs/screenshots/menu2.png"><img src="docs/screenshots/menu2.png" width="150" alt="Main menu"></a> 
+<a href="docs/screenshots/gameplay.png"><img src="docs/screenshots/gameplay.png" width="150" alt="Gameplay"></a> 
+<a href="docs/screenshots/login.png"><img src="docs/screenshots/login.png" width="150" alt="Login"></a> 
+<a href="docs/screenshots/register.png"><img src="docs/screenshots/register.png" width="150" alt="Register"></a> 
+<a href="docs/screenshots/leaderboard.png"><img src="docs/screenshots/leaderboard.png" width="150" alt="Leaderboard"></a> 
+<a href="docs/screenshots/dashboard.png"><img src="docs/screenshots/dashboard.png" width="150" alt="Dashboard"></a> 
+<a href="docs/screenshots/game-over1.png"><img src="docs/screenshots/game-over1.png" width="150" alt="Game over"></a> </p>
+<a href="docs/screenshots/game-over2.png"><img src="docs/screenshots/game-over2.png" width="150" alt="Game over"></a> </p>
 
 ## Features
 
