@@ -87,3 +87,31 @@ class TextInput:
         else:
             image = self.font.render(self.placeholder, True, GREY_TEXT)
         surface.blit(image, image.get_rect(midleft=(self.rect.left + 10, self.rect.centery)))
+
+class MuteButton:
+    def __init__(self, audio, rect):
+        self.audio = audio
+        self.rect = pygame.Rect(rect)
+
+    def handle_event(self, event):
+        # returns True when the click was on the button, so the screen under it does not get that click
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 and self.rect.collidepoint(event.pos):
+            self.audio.toggle_mute()
+            return True
+        return False
+
+    def draw(self, surface):
+        hover = self.rect.collidepoint(pygame.mouse.get_pos())
+        pygame.draw.rect(surface, BUTTON_HOVER if hover else BUTTON_COLOR, self.rect, border_radius=6)
+        x, y = self.rect.center
+        # the speaker is a small box with a cone next to it
+        pygame.draw.rect(surface, TEXT_COLOR, (x - 12, y - 4, 6, 8))
+        pygame.draw.polygon(surface, TEXT_COLOR, [(x - 6, y - 4), (x + 2, y - 10), (x + 2, y + 10), (x - 6, y + 4)])
+        if self.audio.muted:
+            # a red cross means muted
+            pygame.draw.line(surface, (235, 80, 80), (x + 6, y - 6), (x + 16, y + 6), 3)
+            pygame.draw.line(surface, (235, 80, 80), (x + 16, y - 6), (x + 6, y + 6), 3)
+        else:
+            # two arcs mean the sound is on
+            pygame.draw.arc(surface, TEXT_COLOR, (x - 2, y - 8, 12, 16), -1.0, 1.0, 2)
+            pygame.draw.arc(surface, TEXT_COLOR, (x + 2, y - 13, 18, 26), -1.0, 1.0, 2)

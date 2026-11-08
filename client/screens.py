@@ -23,6 +23,7 @@ class ScreenManager:
         self.current = None
         self.last_run = None
         self.pending_run = None
+        self.mute_button = None     # app.py sets it, tests run without it
 
     def add(self, name, screen):
         self.screens[name] = screen
@@ -32,6 +33,9 @@ class ScreenManager:
         self.current.on_enter(**data)
 
     def handle_event(self, event):
+        # the mute button works on every screen and takes its own click
+        if self.mute_button and self.mute_button.handle_event(event):
+            return
         self.current.handle_event(event)
 
     def update(self, dt):
@@ -40,3 +44,5 @@ class ScreenManager:
 
     def draw(self, surface):
         self.current.draw(surface)
+        if self.mute_button:
+            self.mute_button.draw(surface)    # drawn last so it stays on top
