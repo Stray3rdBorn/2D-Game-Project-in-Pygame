@@ -171,6 +171,7 @@ class Game:
         self.state = "playing"
 
     def start_wave(self):
+        audio.play("wave")      # the incoming wave sound
         self.wave += 1
         self.to_spawn = 5 + 5 * self.wave
         self.enemy_speed = min(70 + 12 * self.wave, 220)
@@ -201,10 +202,15 @@ class Game:
         self.player.update(dt, keys)
 
         # Shooting
-        if pygame.mouse.get_pressed()[0] and self.player.can_shoot():
+        mouse_down = pygame.mouse.get_pressed()[0]
+        if not mouse_down:
+            self.fire_locked = False    # I let go of the button, so shooting works again
+        over_zone = self.no_fire_zone is not None and self.no_fire_zone.collidepoint(pygame.mouse.get_pos())
+        if mouse_down and not self.fire_locked and not over_zone and self.player.can_shoot():
             bullet = self.player.shoot(pygame.Vector2(pygame.mouse.get_pos()))
             if bullet:
                 self.bullets.append(bullet)
+                audio.play("shoot")
 
         for bullet in self.bullets:
             bullet.update(dt)
