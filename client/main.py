@@ -171,7 +171,6 @@ class Game:
         self.state = "playing"
 
     def start_wave(self):
-        audio.play("wave")      # the incoming wave sound
         self.wave += 1
         self.to_spawn = 5 + 5 * self.wave
         self.enemy_speed = min(70 + 12 * self.wave, 220)
@@ -253,6 +252,7 @@ class Game:
             if not self.between_waves:
                 self.between_waves = True
                 self.wave_timer = WAVE_PAUSE
+                audio.play_loop("wave")      # the siren starts with the banner
                 self.score += 50 * self.wave
                 if self.wave >= TOTAL_WAVES and self.player.hp > 0:
                     self.win_game()
@@ -260,6 +260,7 @@ class Game:
             self.wave_timer -= dt
             if self.wave_timer <= 0:
                 self.between_waves = False
+                audio.stop("wave")           # the banner is over, so the siren ends
                 self.start_wave()
 
         if self.player.hp <= 0:

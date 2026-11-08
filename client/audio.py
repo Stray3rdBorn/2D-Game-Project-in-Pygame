@@ -52,6 +52,16 @@ class Audio:
         if sound and not self.muted:
             sound.play()
 
+    def play_loop(self, name):
+        sound = self.sounds.get(name)
+        if sound and not self.muted:
+            sound.play(loops=-1)     # -1 repeats until stopped, so any file length works
+
+    def stop(self, name):
+        sound = self.sounds.get(name)
+        if sound:
+            sound.fadeout(300)       # fades out in 300 ms so the siren does not cut with a click
+
     def play_music(self, name):
         if not self.ready:
             return
@@ -73,6 +83,8 @@ class Audio:
 
     def toggle_mute(self):
         self.muted = not self.muted
+        if self.muted:
+         self.stop("wave")
         if self.ready:
             # the music keeps running at volume 0, so unmuting continues the same track
             pygame.mixer.music.set_volume(0 if self.muted else MUSIC_VOLUME)

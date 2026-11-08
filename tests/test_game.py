@@ -2,6 +2,8 @@ import os
 import sys
 from pathlib import Path
 
+from client.main import Game
+
 # Pygame must run without a real window or sound device in CI
 os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
@@ -148,9 +150,16 @@ def test_tank_survives_hits_and_dies_on_the_last_one():
 class FakeAudio:
     def __init__(self):
         self.played = []
+        self.stopped = []
 
     def play(self, name):
         self.played.append(name)
+
+    def play_loop(self, name):
+        self.played.append(name)
+
+    def stop(self, name):
+        self.stopped.append(name)
 
 
 @pytest.fixture
@@ -251,8 +260,12 @@ def test_no_hurt_sound_while_immune(sounds):
     assert "hurt" not in sounds.played
 
 
-def test_wave_sound_plays_when_a_wave_starts(sounds):
+def test_wave_siren_runs_for_the_banner(sounds):
     game = main.Game()
-    game.start_game()
-    game.start_wave()
+    game.to_spawn = 0
+    game.enemies = []
+    game.update_playing(0.016)
     assert sounds.played == ["wave"]
+    game.wave_timer = 0
+    game.update_playing(0.016)
+    assert sounds.stopped == ["wave"]
