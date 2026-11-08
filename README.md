@@ -70,6 +70,7 @@ Gameplay screenshots
 - Guests can play without an account. Registering is only needed to appear on the leaderboard.
 - A run that finishes while you are logged out, or after your login expired, is kept in memory and saved right after you log in.
 - The window never freezes while it talks to the server. All network calls run in a background thread.
+- Music on every screen, four sound effects and a mute button in the top right corner.
 
 **Backend**
 
@@ -113,6 +114,7 @@ You control a blue circle in the middle of the arena. Enemies spawn just outside
 | Shoot                              | Hold left mouse button        |
 | Start or play again                | `Space`                       |
 | Leave a round or a screen, or quit | `Esc`                         |
+| Mute or unmute all sound           | Click the speaker icon        |
 
 ### Enemies
 
@@ -204,14 +206,14 @@ Every tool below has one job. The "why" column is the reason I picked it for thi
 
 ### Game client
 
-| Tool                     | Purpose                                  | Why I chose it                                                            |
-| ------------------------ | ---------------------------------------- | ------------------------------------------------------------------------- |
-| Python 3.12+             | Language of the game and the server      | One language for every part, and the language I wanted to be strongest in |
-| Pygame                   | Window, drawing, input, game loop        | A direct way to write a 2D game loop myself instead of using an engine    |
-| My own widgets (`ui.py`) | Label, Button, TextInput                 | I wanted to understand how UI works, so I did not use a UI library        |
-| `requests`               | HTTP calls to the API                    | The standard Python HTTP client, with simple timeouts and error types     |
-| `python-dotenv`          | Reads `ARENA_API_URL` from a `.env` file | Keeps the server address out of the code during development               |
-| PyInstaller              | Packs the game into one `.exe`           | Players do not need Python installed                                      |
+| Tool                     | Purpose                                  | Why I chose it                                                                                                           |
+| ------------------------ | ---------------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| Python 3.12+             | Language of the game and the server      | One language for every part, and the language I wanted to be strongest in                                                |
+| Pygame                   | Window, drawing, input, game loop        | A direct way to write a 2D game loop myself instead of using an engine, plays the music and effects through pygame.mixer |
+| My own widgets (`ui.py`) | Label, Button, TextInput                 | I wanted to understand how UI works, so I did not use a UI library                                                       |
+| `requests`               | HTTP calls to the API                    | The standard Python HTTP client, with simple timeouts and error types                                                    |
+| `python-dotenv`          | Reads `ARENA_API_URL` from a `.env` file | Keeps the server address out of the code during development                                                              |
+| PyInstaller              | Packs the game into one `.exe`           | Players do not need Python installed                                                                                     |
 
 ### Backend
 
@@ -254,6 +256,9 @@ Every tool below has one job. The "why" column is the reason I picked it for thi
 ```
 .
 ├── client/                      the game the player runs
+|   ├── assets/
+|   |     ├── music/             music for the game
+│   |     ├── sound/             sound effects for the game
 │   ├── app.py                   start file: builds the screens and runs the loop
 │   ├── main.py                  gameplay: player, bullets, enemies, waves, scoring
 │   ├── views.py                 every screen: menu, login, register, leaderboard, dashboard, play, game over
