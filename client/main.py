@@ -2,6 +2,7 @@ import json
 import random           # for random enemy spawn positions and tank chance
 
 from paths import data_folder
+from audio import audio
 
 import pygame
 
@@ -148,6 +149,7 @@ class Game:
         self.player = Player()
         self.state = "menu"
         self.running = True
+        self.no_fire_zone = None    # app.py sets this to the mute button area, a click there must not shoot
         self.reset()
 
     def reset(self):
@@ -161,6 +163,8 @@ class Game:
         self.enemy_speed = 0
         self.between_waves = False
         self.wave_timer = 0.0
+        # the click that started the game is still held down, so shooting stays locked until I let go
+        self.fire_locked = True
 
     def start_game(self):
         self.reset()
