@@ -42,7 +42,7 @@ jobs:
           printf 'API_URL = "%s"\n' "$ARENA_API_URL" > client/server_address.py
 
       - name: Build the exe
-        run: pyinstaller --onefile --windowed --name DecaDome --paths client client/app.py
+        run: pyinstaller --onefile --windowed --name DecaDome --paths client --add-data "client/assets;assets" client/app.py
 
       # start the exe for a few seconds, it must still be running
       - name: Smoke test the exe
