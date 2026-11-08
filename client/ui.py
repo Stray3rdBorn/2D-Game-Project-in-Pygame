@@ -104,6 +104,7 @@ class MuteButton:
         hover = self.rect.collidepoint(pygame.mouse.get_pos())
         pygame.draw.rect(surface, BUTTON_HOVER if hover else BUTTON_COLOR, self.rect, border_radius=6)
         x, y = self.rect.center
+        x -= 2 
         # the speaker is a small box with a cone next to it
         pygame.draw.rect(surface, TEXT_COLOR, (x - 12, y - 4, 6, 8))
         pygame.draw.polygon(surface, TEXT_COLOR, [(x - 6, y - 4), (x + 2, y - 10), (x + 2, y + 10), (x - 6, y + 4)])
@@ -114,4 +115,4 @@ class MuteButton:
         else:
             # two arcs mean the sound is on
             pygame.draw.arc(surface, TEXT_COLOR, (x - 2, y - 8, 12, 16), -1.0, 1.0, 2)
-            pygame.draw.arc(surface, TEXT_COLOR, (x + 2, y - 13, 18, 26), -1.0, 1.0, 2)
+            pygame.draw.arc(surface, TEXT_COLOR, (x + 1, y - 12, 17, 25), -1.0, 1.0, 2)
