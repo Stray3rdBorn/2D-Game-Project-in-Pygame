@@ -236,13 +236,17 @@ class Game:
                     if enemy.hp <= 0:
                         self.enemies.remove(enemy)
                         self.score += enemy.points
+                        audio.play("kill")    # only the shot that kills the enemy makes this sound
                     break
 
         # Enemies touching the player
         for enemy in self.enemies[:]:
             if collides(enemy.pos, enemy.radius, self.player.pos, PLAYER_RADIUS):
                 self.enemies.remove(enemy)
+                hp_before = self.player.hp
                 self.player.hit()
+                if self.player.hp < hp_before:
+                    audio.play("hurt")    # no buzz when the hit was ignored because of immunity
 
         # Wave cleared: bonus, short pause, next wave
         if self.to_spawn == 0 and not self.enemies:
