@@ -2,8 +2,6 @@ import os
 import sys
 from pathlib import Path
 
-from client.main import Game
-
 # Pygame must run without a real window or sound device in CI
 os.environ.setdefault("SDL_VIDEODRIVER", "dummy")
 os.environ.setdefault("SDL_AUDIODRIVER", "dummy")
