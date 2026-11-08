@@ -3,6 +3,7 @@ import pygame
 import ui
 from main import WIDTH
 from screens import Screen
+from audio import audio
 
 CENTER = WIDTH // 2
 WHITE = (255, 255, 255)
@@ -78,6 +79,7 @@ class MenuScreen(Screen):
         self.buttons = []
 
     def on_enter(self, **data):
+        audio.play_music("menu")    # starts when the game opens and keeps going through login, register, leaderboard and dashboard
         manager = self.manager
         items = [("Start Game", lambda: manager.switch("play"), (40, 167, 69), (30, 126, 52))]   #green 
         if manager.session.logged_in:
@@ -306,6 +308,8 @@ class GameOverScreen(Screen):
         if manager.last_run is None:
             manager.switch("menu")
             return
+        # a win and a loss get their own music
+        audio.play_music("victory" if manager.last_run["won"] else "game_over")
         self.rows = []
         self.board_status = "Loading..."
         self.save_run()
@@ -392,6 +396,7 @@ class PlayScreen(Screen):
         self.game = game
 
     def on_enter(self, **data):
+        audio.play_music("play")
         self.game.start_game()
 
     def handle_event(self, event):
