@@ -39,6 +39,7 @@ The API runs on a free hosting plan. After 15 minutes without a visitor it goes 
 17. [Roadmap](#roadmap)
 18. [License](#license)
 19. [Contact](#contact)
+20. [Audio Credits](#Audio Credits)
 
 ## Screenshots
 
@@ -633,3 +634,19 @@ MIT. See [LICENSE](LICENSE).
 ## Contact
 
 I am Wahid, ([Stray3rdBorn](https://github.com/Stray3rdBorn) on GitHub). For bugs and questions about the project, open an issue in this repository.
+
+## Audio Credits
+
+### Music
+
+| Track                                 | Artist / Developer                         | Source & License                                                         |
+| :------------------------------------ | :----------------------------------------- | :----------------------------------------------------------------------- |
+| **Terminus**                          | [Audiomachine](https://audiomachine.com)   | [YouTube](https://youtube.com) • © 2011 Audiomachine Records             |
+| **Main Menu Theme (Alien Shooter 2)** | [Sigma Team](https://sigma-team.net)       | [YouTube](https://youtube.com) • Original Game Soundtrack                |
+| **Achievement**                       | [Alexander Nakarada](https://bandcamp.com) | [YouTube](https://youtube.com) • [CC BY 4.0](http://creativecommons.org) |
+
+### Sound Effects
+
+| Asset            | Creator                                   | Source & License                                                                    |
+| :--------------- | :---------------------------------------- | :---------------------------------------------------------------------------------- |
+| **Impact Laser** | [Free Sound Effects](https://youtube.com) | [YouTube](https://www.youtube.com/watch?v=acvLOmMbXi0) • Royalty-Free / Free to Use |

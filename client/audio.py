@@ -9,7 +9,7 @@ EXTENSIONS = (".ogg", ".mp3", ".wav")    # the first one that exists is used, so
 
 MUSIC_VOLUME = 0.4
 # the shoot sound plays all the time, so it is the quietest
-EFFECT_VOLUME = {"shoot": 0.25, "kill": 0.6, "hurt": 0.7, "wave": 0.7}
+EFFECT_VOLUME = {"shoot": 0.05, "kill": 0.4, "hurt": 0.4, "wave": 0.3}
 
 
 class Audio:
