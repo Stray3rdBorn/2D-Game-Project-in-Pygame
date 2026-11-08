@@ -7,9 +7,9 @@ MUSIC = ("menu", "play", "game_over", "victory")
 EFFECTS = ("shoot", "kill", "hurt", "wave")
 EXTENSIONS = (".ogg", ".mp3", ".wav")    # the first one that exists is used, so any of these formats works
 
-MUSIC_VOLUME = 0.4
+MUSIC_VOLUME = 0.5
 # the shoot sound plays all the time, so it is the quietest
-EFFECT_VOLUME = {"shoot": 0.05, "kill": 0.4, "hurt": 0.4, "wave": 0.3}
+EFFECT_VOLUME = {"shoot": 0.05, "kill": 0.3, "hurt": 0.4, "wave": 0.2}
 
 
 class Audio:
