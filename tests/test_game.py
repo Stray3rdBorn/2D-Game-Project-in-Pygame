@@ -144,3 +144,115 @@ def test_tank_survives_hits_and_dies_on_the_last_one():
 
     assert tank not in game.enemies
     assert game.score == main.TANK_POINTS
+
+class FakeAudio:
+    def __init__(self):
+        self.played = []
+
+    def play(self, name):
+        self.played.append(name)
+
+
+@pytest.fixture
+def sounds(monkeypatch):
+    fake = FakeAudio()
+    monkeypatch.setattr(main, "audio", fake)
+    return fake
+
+
+def mouse(monkeypatch, pressed, pos=(10, 10)):
+    monkeypatch.setattr(pygame.mouse, "get_pressed", lambda: (pressed, False, False))
+    monkeypatch.setattr(pygame.mouse, "get_pos", lambda: pos)
+
+
+def test_click_that_starts_the_game_does_not_shoot(monkeypatch, sounds):
+    mouse(monkeypatch, True)
+    game = main.Game()
+    game.start_game()
+    game.update_playing(0.016)
+    assert game.bullets == []
+    assert "shoot" not in sounds.played
+
+
+def test_shooting_works_after_the_button_was_released_once(monkeypatch, sounds):
+    game = main.Game()
+    game.start_game()
+    mouse(monkeypatch, True)
+    game.update_playing(0.016)
+    mouse(monkeypatch, False)
+    game.update_playing(0.016)
+    mouse(monkeypatch, True)
+    game.update_playing(0.016)
+    assert len(game.bullets) == 1
+    assert sounds.played.count("shoot") == 1
+
+
+def test_play_again_click_does_not_shoot_either(monkeypatch, sounds):
+    game = main.Game()
+    game.start_game()
+    mouse(monkeypatch, False)
+    game.update_playing(0.016)
+    game.start_game()
+    mouse(monkeypatch, True)
+    game.update_playing(0.016)
+    assert game.bullets == []
+
+
+def test_click_on_the_no_fire_zone_does_not_shoot(monkeypatch, sounds):
+    game = main.Game()
+    game.start_game()
+    game.no_fire_zone = pygame.Rect(0, 0, 50, 50)
+    mouse(monkeypatch, False)
+    game.update_playing(0.016)
+    mouse(monkeypatch, True, pos=(10, 10))
+    game.update_playing(0.016)
+    assert game.bullets == []
+    mouse(monkeypatch, True, pos=(400, 400))
+    game.update_playing(0.016)
+    assert len(game.bullets) == 1
+
+
+def test_kill_sound_plays_only_on_the_killing_shot(sounds):
+    game = main.Game()
+    game.start_game()
+    game.to_spawn = 5
+    game.spawn_timer = 100
+    tank = main.Enemy(Vector2(100, 100), 0, hp=main.TANK_HP, radius=main.TANK_RADIUS,
+                      points=main.TANK_POINTS)
+    game.enemies = [tank]
+    for hits_so_far in range(1, main.TANK_HP + 1):
+        game.bullets = [main.Bullet(Vector2(100, 100), Vector2(0, 0))]
+        game.update_playing(0.001)
+        if hits_so_far < main.TANK_HP:
+            assert "kill" not in sounds.played
+    assert sounds.played.count("kill") == 1
+
+
+def test_hurt_sound_plays_when_an_enemy_hits_the_player(sounds):
+    game = main.Game()
+    game.start_game()
+    game.to_spawn = 5
+    game.spawn_timer = 100
+    game.enemies = [main.Enemy(Vector2(game.player.pos), 0)]
+    game.update_playing(0.001)
+    assert game.player.hp == main.PLAYER_HP - 1
+    assert sounds.played.count("hurt") == 1
+
+
+def test_no_hurt_sound_while_immune(sounds):
+    game = main.Game()
+    game.start_game()
+    game.to_spawn = 5
+    game.spawn_timer = 100
+    game.player.invulnerable = 1.0
+    game.enemies = [main.Enemy(Vector2(game.player.pos), 0)]
+    game.update_playing(0.001)
+    assert game.player.hp == main.PLAYER_HP
+    assert "hurt" not in sounds.played
+
+
+def test_wave_sound_plays_when_a_wave_starts(sounds):
+    game = main.Game()
+    game.start_game()
+    game.start_wave()
+    assert sounds.played == ["wave"]
