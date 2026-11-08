@@ -1,10 +1,12 @@
 import pygame
 
 import views
-from main import FPS, Game
+from audio import audio
+from main import FPS, WIDTH, Game
 from network import Network
 from screens import ScreenManager
 from storage import Session
+from ui import MuteButton
 
 
 def build(game, session, network):
@@ -17,12 +19,16 @@ def build(game, session, network):
     manager.add("dashboard", views.DashboardScreen(manager, fonts))
     manager.add("game_over", views.GameOverScreen(manager, fonts))
     manager.add("play", views.PlayScreen(manager, game))
+    # the mute button sits in the top right corner on every screen
+    manager.mute_button = MuteButton(audio, (WIDTH - 54, 10, 44, 44))
+    game.no_fire_zone = manager.mute_button.rect    # clicking the button must not shoot
     return manager
 
 
 def run():
     game = Game()
     network = Network()
+    audio.start()    # the menu music begins as soon as the menu opens
     # wake the server in the background while the menu is showing
     network.wake()
     manager = build(game, Session(), network)
